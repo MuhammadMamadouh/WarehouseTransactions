@@ -9,4 +9,6 @@ abstract class WarehouseTransaction
     abstract public function store();
 
     abstract public function show();
+
+    
 }
