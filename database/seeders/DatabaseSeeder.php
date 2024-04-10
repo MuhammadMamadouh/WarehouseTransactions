@@ -15,9 +15,30 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        // run factory of warehouse
+        // \App\Models\Warehouse::factory()
+        //     ->count(10)
+        //     ->create();
+
+        // // run factory of item
+        // \App\Models\Item::factory()
+        //     ->count(10)
+        //     ->create();
+
+        // run factory of transaction header with factory of warehouse
+        \App\Models\TransactionHeader::factory()
+            ->count(10)
+            ->hasDetails(5)
+            ->hasToWarehouse()
+            ->create();
+
+        // run factory of transaction detail with factory of item
+
+
     }
 }

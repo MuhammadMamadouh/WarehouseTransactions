@@ -19,12 +19,12 @@ class WTController extends Controller
         return $this->wtService->index();
     }
 
-    public function store(){
-        return $this->wtService->store();
+    public function store(Request $request){
+        return $this->wtService->store($request);
     }
 
-    public function show(){
-        return $this->wtService->show();
+    public function show($id){
+        return $this->wtService->show($id);
     }
 
     // public function update(){

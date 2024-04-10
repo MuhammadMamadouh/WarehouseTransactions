@@ -5,5 +5,5 @@ namespace App\Interfaces;
 interface IDeliverable
 {
     //
-    public function deliver();
+    public function deliver($id);
 }

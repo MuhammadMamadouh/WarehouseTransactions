@@ -8,3 +8,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::resource('/transaction', 'App\Http\Controllers\WTController');
+Route::post('transaction/{id}/deliver', 'App\Http\Controllers\DeliveryController');

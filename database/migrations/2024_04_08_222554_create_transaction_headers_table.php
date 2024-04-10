@@ -17,19 +17,18 @@ return new class extends Migration
             $table->date('transaction_date');
             $table->string('document_no');
             $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('from_warehouse_id');
-            $table->unsignedBigInteger('to_warehouse_id');
-            $table->unsignedBigInteger('journal_entry_id');
+            $table->unsignedBigInteger('from_warehouse_id')->nullable();
+            $table->unsignedBigInteger('to_warehouse_id')->nullable();
+            $table->unsignedBigInteger('journal_entry_id')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('from_warehouse_id')->references('id')->on('warehouses');
             $table->foreign('to_warehouse_id')->references('id')->on('warehouses');
             $table->integer('total_price');
             $table->integer('total_discount');
-            $table->integer('total_payment');
-            $table->integer('total_change');
             $table->string('note');
             $table->tinyInteger('transaction_type');
             $table->foreign('journal_entry_id')->references('id')->on('journal_entry_headers');
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

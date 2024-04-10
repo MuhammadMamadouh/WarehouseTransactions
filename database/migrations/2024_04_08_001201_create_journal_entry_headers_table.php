@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('journal_entry_headers', function (Blueprint $table) {
             $table->id();
             $table->string('journal_entry_no');
+            $table->date('date');
             $table->string('notes');
             $table->double('debit');
             $table->double('credit');

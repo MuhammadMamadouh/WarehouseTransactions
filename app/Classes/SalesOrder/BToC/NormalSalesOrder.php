@@ -3,7 +3,7 @@
 namespace App\Classes\SalesOrder\BToC;
 
 use App\Classes\WarehouseTransaction;
-
+use Illuminate\Http\Request;
 
 class NormalSalesOrder extends WarehouseTransaction
 {
@@ -13,11 +13,11 @@ class NormalSalesOrder extends WarehouseTransaction
         return 'BToC NormalSalesOrder index';
     }
 
-    public function store(){
+    public function store(Request $request){
         return 'BToC NormalSalesOrder store';
     }
 
-    public function show(){
+    public function show($id){
         return 'BToC NormalSalesOrder show';
     }
 }
