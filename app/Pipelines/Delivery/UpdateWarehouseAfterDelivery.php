@@ -10,7 +10,7 @@ class UpdateWarehouseAfterDelivery
 
     public function handle($transaction, Closure $next)
     {
-
+        // get details from request if transaction is not yet created
         $details = count($transaction->details) > 0 ? $transaction->details : request()->details;
         try {
 

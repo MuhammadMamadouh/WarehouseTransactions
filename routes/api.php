@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 
 Route::resource('/transaction', 'App\Http\Controllers\WTController');
 Route::post('transaction/{id}/deliver', 'App\Http\Controllers\DeliveryController');
+Route::post('transaction/{id}/cancel', 'App\Http\Controllers\CancelingController');
