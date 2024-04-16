@@ -31,7 +31,7 @@ class NormalSalesOrder extends WarehouseTransaction implements IDeliverable, ICa
     }
 
     public function show($id){
-        return 'BToB NormalSalesOrder show';
+        return new TransactionHeaderResource(TransactionHeader::find($id));
     }
 
     public function deliver($id){
@@ -40,23 +40,9 @@ class NormalSalesOrder extends WarehouseTransaction implements IDeliverable, ICa
         if($transaction->status != TransactionHeader::PENDING){
             return response(['error' => 'This transaction is not in pending status']);
         }
-        $this->processDelivery($transaction);
+        $transaction->update(['status' => TransactionHeader::DELIVERED]); // once delivered, it will fire event in the background (check TransactionHeader model)
 
         return response(['message' => 'Transaction delivered successfully']);
-    }
-
-    private function processDelivery($transaction){
-
-        $pipeline = [
-            UpdateTransactionToDelivered::class,
-            CreateJournalEntryForTransaction::class,
-        ];
-        if($transaction->from_warehouse_id && $transaction->to_warehouse_id){ // if transaction is warehouse to warehouse
-            $pipeline[] = UpdateWarehouseAfterDelivery::class;
-        }
-        DB::transaction(function () use ($transaction, $pipeline){
-            Pipeline::send($transaction)->through($pipeline)->thenReturn();
-        });
     }
 
     public function cancel(){

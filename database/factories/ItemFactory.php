@@ -25,10 +25,21 @@ class ItemFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-            'name'  => $this->faker->name,
-            'code'  => $this->faker->unique()->randomNumber(5),
+            'name' => $this->faker->name,
+            'code' => $this->faker->unique()->randomNumber(5),
             'price' => $this->faker->randomFloat(2, 1, 1000),
         ];
     }
+
+    public function hasWarehouses($count = 1, $attributes = [])
+    {
+        return $this->has(
+            \App\Models\Warehouse::factory()->count($count),
+            'warehouses',
+            function ($item, $warehouse) use ($attributes) {
+                return $attributes;
+            }
+        );
+    }
+
 }

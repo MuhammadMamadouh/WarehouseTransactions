@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('warehouse_id')->constrained();
             $table->foreignId('item_id')->constrained();
-            $table->integer('stock');
-            $table->timestamps();
+            $table->unsignedInteger('stock')->default(0);
         });
     }
 

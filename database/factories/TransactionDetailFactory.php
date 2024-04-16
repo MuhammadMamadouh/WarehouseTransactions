@@ -20,7 +20,7 @@ class TransactionDetailFactory extends Factory
             //
             'transaction_header_id' => $this->faker->randomNumber(5),
             'item_id' => function () {
-                return \App\Models\Item::factory()->create()->id;
+                return \App\Models\Item::factory()->hasWarehouses(1, ['stock' => 100])->create()->id;
             },
             'quantity' => $this->faker->randomNumber(2),
             'cost' => $this->faker->randomDigitNotZero(),

@@ -2,18 +2,42 @@
 
 namespace App\Models;
 
+use App\Pipelines\Delivery\CreateJournalEntryForTransaction;
+use App\Pipelines\Delivery\UpdateTransactionToDelivered;
+use App\Pipelines\Delivery\UpdateWarehouseAfterDelivery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Pipeline;
 
 class TransactionHeader extends Model
 {
     use HasFactory;
 
+    // boot to run event on model when created or updated
+    protected static function boot()
+    {
+        parent::boot();
+        DB::transaction(function () {
+            static::saving(function ($transaction) {
+
+                if ($transaction->status == self::DELIVERED && $transaction->journal_entry_id == null) {
+                    Pipeline::send($transaction)
+                        ->through([
+                            CreateJournalEntryForTransaction::class,
+                            UpdateWarehouseAfterDelivery::class,
+                            UpdateTransactionToDelivered::class,
+                        ])->thenReturn();
+
+                }
+            });
+        });
+    }
+
     const NORMAL_B2B_SALES = 1;
     const RETURN_B2B_SALES = 2;
     const NORMAL_B2C_SALES = 3;
     const RETURN_B2C_SALES = 4;
-
 
     const TRANSACTION_TYPES = [
         self::NORMAL_B2B_SALES => 'Normal B2B Sales',
@@ -32,7 +56,6 @@ class TransactionHeader extends Model
         self::DELIVERED => 'Delivered',
         self::CANCELLED => 'Cancelled',
     ];
-
 
     protected $table = 'transaction_headers';
 
@@ -117,7 +140,6 @@ class TransactionHeader extends Model
     {
         return $query->where('transaction_type', self::RETURN_B2C_SALES);
     }
-
 
     // ===================== Relationships =====================
 
