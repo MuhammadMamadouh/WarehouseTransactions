@@ -15,7 +15,7 @@ class NormalSalesOrder extends WarehouseTransaction implements IDeliverable, ICa
 
     public function index()
     {
-        $transactions = TransactionHeader::normal_b2b()->get();
+        $transactions = TransactionHeader::normal_b2b()->paginate(30);
         return TransactionHeaderCollection::collection($transactions);
     }
 
@@ -51,7 +51,6 @@ class NormalSalesOrder extends WarehouseTransaction implements IDeliverable, ICa
             return response(['error' => 'This transaction is not in pending status']);
         }
         $transaction->update(['status' => TransactionHeader::CANCELLED]);
-
         return response(['message' => 'Transaction cancelled successfully']);
     }
 }

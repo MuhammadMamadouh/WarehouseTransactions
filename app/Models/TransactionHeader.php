@@ -14,7 +14,6 @@ class TransactionHeader extends Model
 {
     use HasFactory;
 
-    // boot to run event on model when created or updated
     protected static function boot()
     {
         parent::boot();
@@ -28,7 +27,6 @@ class TransactionHeader extends Model
                             UpdateWarehouseAfterDelivery::class,
                             UpdateTransactionToDelivered::class,
                         ])->thenReturn();
-
                 }
             });
         });
