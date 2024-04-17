@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\SalesOrder\BToB;
+namespace App\Classes;
 
 use App\Classes\WarehouseTransaction;
 use App\Http\Resources\TransactionHeaderCollection;
@@ -10,9 +10,8 @@ use App\Interfaces\IDeliverable;
 use App\Models\TransactionHeader;
 use Illuminate\Http\Request;
 
-class NormalSalesOrder extends WarehouseTransaction implements IDeliverable, ICancelable
+class IssueTransaction extends WarehouseTransaction implements IDeliverable
 {
-
     public function index()
     {
         $transactions = TransactionHeader::normal_b2b()->paginate(30);
@@ -43,14 +42,7 @@ class NormalSalesOrder extends WarehouseTransaction implements IDeliverable, ICa
         return response(['message' => 'Transaction delivered successfully']);
     }
 
-    public function cancel($id)
-    {
-        $transaction = TransactionHeader::find($id);
 
-        if ($transaction->status != TransactionHeader::PENDING) {
-            return response(['error' => 'This transaction is not in pending status']);
-        }
-        $transaction->update(['status' => TransactionHeader::CANCELLED]);
-        return response(['message' => 'Transaction cancelled successfully']);
-    }
+
+
 }

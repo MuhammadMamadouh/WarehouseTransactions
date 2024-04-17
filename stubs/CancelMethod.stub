@@ -1,0 +1,11 @@
+    public function cancel($id)
+    {
+        $transaction = TransactionHeader::find($id);
+
+        if ($transaction->status != TransactionHeader::PENDING) {
+            return response(['error' => 'This transaction is not in pending status']);
+        }
+        $transaction->update(['status' => TransactionHeader::CANCELLED]);
+        return response(['message' => 'Transaction cancelled successfully']);
+    }
+

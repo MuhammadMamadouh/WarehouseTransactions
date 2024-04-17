@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface ICanceable
+interface ICancelable
 {
     //
     public function cancel($id);

@@ -5,12 +5,12 @@ namespace App\Classes\SalesOrder\BToB;
 use App\Classes\WarehouseTransaction;
 use App\Http\Resources\TransactionHeaderCollection;
 use App\Http\Resources\TransactionHeaderResource;
-use App\Interfaces\ICanceable;
+use App\Interfaces\ICancelable;
 use App\Interfaces\IDeliverable;
 use App\Models\TransactionHeader;
 use Illuminate\Http\Request;
 
-class ReturnSalesOrder extends WarehouseTransaction implements IDeliverable, ICanceable
+class ReturnSalesOrder extends WarehouseTransaction implements IDeliverable, ICancelable
 {
     //
 

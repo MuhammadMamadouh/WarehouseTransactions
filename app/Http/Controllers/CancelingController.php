@@ -13,7 +13,7 @@ class CancelingController extends Controller
         $warehouseTransaction = $factory->make($request->type);
 
         // check if the warehouseTransaction implements IDeliverable interface
-        if (!($warehouseTransaction instanceof \App\Interfaces\ICanceable)) {
+        if (!($warehouseTransaction instanceof \App\Interfaces\ICancelable)) {
             return response()->json(['error' => 'This transaction type is not Canceable'], 422);
         }
         return $warehouseTransaction->cancel($id);
