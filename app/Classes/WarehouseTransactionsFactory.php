@@ -27,6 +27,7 @@ class WarehouseTransactionsFactory
             'B2BR'  => new BToBReturnSalesOrder(),
             'B2C'   => new BToCNormalSalesOrder(),
             'B2CR'  => new BToCReturnSalesOrder(),
+		// new transactions
         ];
     }
 }
