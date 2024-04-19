@@ -20,13 +20,14 @@ return new class extends Migration
             $table->unsignedBigInteger('from_warehouse_id')->nullable();
             $table->unsignedBigInteger('to_warehouse_id')->nullable();
             $table->unsignedBigInteger('journal_entry_id')->nullable();
+            $table->unsignedBigInteger('transaction_type_id');
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('from_warehouse_id')->references('id')->on('warehouses');
             $table->foreign('to_warehouse_id')->references('id')->on('warehouses');
             $table->integer('total_price');
             $table->integer('total_discount');
             $table->string('note');
-            $table->tinyInteger('transaction_type');
+            $table->foreign('transaction_type_id')->references('id')->on('transaction_types');
             $table->foreign('journal_entry_id')->references('id')->on('journal_entry_headers');
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
