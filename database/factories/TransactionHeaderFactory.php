@@ -28,9 +28,6 @@ class TransactionHeaderFactory extends Factory
             'code' => 'TRX-' . $this->faker->unique()->randomNumber(5), // 'TRX-12345
             'transaction_date' => $this->faker->date,
             'document_no' => $this->faker->unique()->randomNumber(5),
-            'created_by' => function () {
-                return \App\Models\User::factory()->create()->id;
-            },
             'from_warehouse_id' => function () {
                 return \App\Models\Warehouse::factory()->create()->id;
             },
@@ -43,7 +40,7 @@ class TransactionHeaderFactory extends Factory
             'total_price' => $this->faker->randomFloat(2, 1, 1000),
             'total_discount' => $this->faker->randomFloat(2, 1, 1000),
             'note' => $this->faker->text,
-            'transaction_type' => $this->faker->randomNumber(1),
+            'transaction_type_id' => $this->faker->randomNumber(1),
 
         ];
     }

@@ -16,12 +16,10 @@ return new class extends Migration
             $table->string('code');
             $table->date('transaction_date');
             $table->string('document_no');
-            $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('from_warehouse_id')->nullable();
             $table->unsignedBigInteger('to_warehouse_id')->nullable();
             $table->unsignedBigInteger('journal_entry_id')->nullable();
             $table->unsignedBigInteger('transaction_type_id');
-            $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('from_warehouse_id')->references('id')->on('warehouses');
             $table->foreign('to_warehouse_id')->references('id')->on('warehouses');
             $table->integer('total_price');

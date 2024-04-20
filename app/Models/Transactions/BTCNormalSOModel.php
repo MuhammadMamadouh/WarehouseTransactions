@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Transactions;
 
+use App\Models\TransactionHeader;
 use App\Pipelines\Delivery\CreateJournalEntryForTransaction;
 use App\Pipelines\Delivery\UpdateTransactionToDelivered;
 use App\Pipelines\Delivery\UpdateWarehouseAfterDelivery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
 
-class BTBNormaSalesOrder extends TransactionHeader
+
+class BTCNormalSOModel extends TransactionHeader
 {
     use HasFactory;
 
@@ -19,7 +20,6 @@ class BTBNormaSalesOrder extends TransactionHeader
         parent::boot();
         DB::transaction(function () {
             static::saving(function ($transaction) {
-                $transaction->type = self::$transactiontype;
                 if ($transaction->status == self::DELIVERED && $transaction->journal_entry_id == null) {
                     Pipeline::send($transaction)
                         ->through([
@@ -31,6 +31,7 @@ class BTBNormaSalesOrder extends TransactionHeader
             });
         });
     }
+
 
 
 

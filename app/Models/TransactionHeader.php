@@ -14,35 +14,10 @@ class TransactionHeader extends Model
 {
     use HasFactory;
 
-    protected static function boot()
+    protected static function getType($type = null)
     {
-        parent::boot();
-        DB::transaction(function () {
-            static::saving(function ($transaction) {
-
-                if ($transaction->status == self::DELIVERED && $transaction->journal_entry_id == null) {
-                    Pipeline::send($transaction)
-                        ->through([
-                            CreateJournalEntryForTransaction::class,
-                            UpdateWarehouseAfterDelivery::class,
-                            UpdateTransactionToDelivered::class,
-                        ])->thenReturn();
-                }
-            });
-        });
+        return TransactionType::where('name', $type)->first();
     }
-
-    const NORMAL_B2B_SALES = 1;
-    const RETURN_B2B_SALES = 2;
-    const NORMAL_B2C_SALES = 3;
-    const RETURN_B2C_SALES = 4;
-
-    const TRANSACTION_TYPES = [
-        self::NORMAL_B2B_SALES => 'Normal B2B Sales',
-        self::RETURN_B2B_SALES => 'Return B2B Sales',
-        self::NORMAL_B2C_SALES => 'Normal B2C Sales',
-        self::RETURN_B2C_SALES => 'Return B2C Sales',
-    ];
 
     // status
     const PENDING = 0;
@@ -64,44 +39,26 @@ class TransactionHeader extends Model
         'quantity',
         'transaction_date',
         'document_no',
-        'created_by',
         'from_warehouse_id',
         'to_warehouse_id',
         'journal_entry_id',
         'total_price',
         'total_discount',
         'note',
-        'transaction_type',
+        'transaction_type_id',
         'status',
     ];
 
     protected $casts = [
         'transaction_date' => 'datetime',
+        'transaction_type_id' => 'integer',
     ];
 
     // SET default values
     protected $attributes = [
         'status' => self::PENDING,
+        // 'transaction_type_id' => self::getType(request()->query('type'))->id,
     ];
-
-    /**
-     * Get the transaction type
-     */
-    public function getTransactionType()
-    {
-        switch ($this->transaction_type) {
-            case self::NORMAL_B2B_SALES:
-                return 'Normal B2B Sales';
-            case self::RETURN_B2B_SALES:
-                return 'Return B2B Sales';
-            case self::NORMAL_B2C_SALES:
-                return 'Normal B2C Sales';
-            case self::RETURN_B2C_SALES:
-                return 'Return B2C Sales';
-            default:
-                return 'Unknown';
-        }
-    }
 
     // function to get status
     public function getStatus()
@@ -116,27 +73,6 @@ class TransactionHeader extends Model
             default:
                 return 'Unknown';
         }
-    }
-
-    // ===================== scopes =====================
-    public function scopeNormal_b2b($query)
-    {
-        return $query->where('transaction_type', self::NORMAL_B2B_SALES);
-    }
-
-    public function scopeReturn_b2b($query)
-    {
-        return $query->where('transaction_type', self::RETURN_B2B_SALES);
-    }
-
-    public function scopeNormal_b2c($query)
-    {
-        return $query->where('transaction_type', self::NORMAL_B2C_SALES);
-    }
-
-    public function scopeReturn_b2c($query)
-    {
-        return $query->where('transaction_type', self::RETURN_B2C_SALES);
     }
 
     // ===================== Relationships =====================
@@ -164,6 +100,11 @@ class TransactionHeader extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(TransactionType::class, 'transaction_type', 'id');
     }
 
 }

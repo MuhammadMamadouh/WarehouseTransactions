@@ -9,25 +9,26 @@ use App\Interfaces\ICancelable;
 use App\Interfaces\IDeliverable;
 use App\Models\TransactionHeader;
 use Illuminate\Http\Request;
+use App\Models\Transactions\$modelName;
 
 class $className extends WarehouseTransaction $implementation
 {
     public function index()
     {
-        $transactions = TransactionHeader::normal_b2b()->paginate(30);
+        $transactions = $modelName::paginate(30);
         return TransactionHeaderCollection::collection($transactions);
     }
 
     public function store(Request $request)
     {
-        $header = TransactionHeader::create($request->all());
+        $header = $modelName::create($request->all());
         $header->details()->createMany($request->details);
         return new TransactionHeaderResource($header);
     }
 
     public function show($id)
     {
-        return new TransactionHeaderResource(TransactionHeader::find($id));
+        return new TransactionHeaderResource($modelName::find($id));
     }
 // deliver method
 // cancel method

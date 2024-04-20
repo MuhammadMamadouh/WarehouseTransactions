@@ -23,11 +23,9 @@ class WarehouseTransactionsFactory
 
     public function transactions(){
         return [
-            'B2B'   => new BToBNormalSalesOrder(),
-            'B2BR'  => new BToBReturnSalesOrder(),
-            'B2C'   => new BToCNormalSalesOrder(),
-            'B2CR'  => new BToCReturnSalesOrder(),
-			'BTBN' => new BTBNormaSalesOrder(),
+
+			'BTBN' => new BTBNormalSO(),
+			'BTCN' => new BTCNormalSO(),
 		// new transactions
         ];
     }
