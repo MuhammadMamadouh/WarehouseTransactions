@@ -4,8 +4,9 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TransactionHeader>
  */
 class TransactionHeaderFactory extends Factory
 {
@@ -23,24 +24,26 @@ class TransactionHeaderFactory extends Factory
      */
     public function definition(): array
     {
+
+        $transaction_types = \App\Models\TransactionType::all()->pluck('id')->toArray();
         return [
 
-            'code' => 'TRX-' . $this->faker->unique()->randomNumber(5), // 'TRX-12345
-            'transaction_date' => $this->faker->date,
-            'document_no' => $this->faker->unique()->randomNumber(5),
+            'code'              => 'TRX-' . $this->faker->unique()->randomNumber(5), // 'TRX-12345
+            'transaction_date'  => $this->faker->date,
+            'document_no'       => $this->faker->unique()->randomNumber(5),
             'from_warehouse_id' => function () {
                 return \App\Models\Warehouse::factory()->create()->id;
             },
-            'to_warehouse_id' => function () {
+            'to_warehouse_id'   => function () {
                 return \App\Models\Warehouse::factory()->create()->id;
             },
-            'journal_entry_id' => function () {
+            'journal_entry_id'  => function () {
                 return \App\Models\JournalEntryHeader::factory()->create()->id;
             },
-            'total_price' => $this->faker->randomFloat(2, 1, 1000),
-            'total_discount' => $this->faker->randomFloat(2, 1, 1000),
-            'note' => $this->faker->text,
-            'transaction_type_id' => $this->faker->randomNumber(1),
+            'total_price'       => $this->faker->randomFloat(2, 1, 1000),
+            'total_discount'    => $this->faker->randomFloat(2, 1, 1000),
+            'note'              => $this->faker->text,
+            'transaction_type_id' => $this->faker->randomElement($transaction_types),
 
         ];
     }

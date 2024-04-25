@@ -16,7 +16,7 @@ class CreateJournalEntryForTransaction
             'debit'             => $transaction->total_price,
             'credit'            => $transaction->total_price,
         ]);
-
+        dd($journalEntry);
         foreach ($transaction->details as $detail) {
             $journalEntry->details()->create([
                 'debit'     => $detail->price,

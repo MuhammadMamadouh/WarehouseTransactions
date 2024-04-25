@@ -13,9 +13,26 @@ use Illuminate\Support\Facades\Pipeline;
 class TransactionHeader extends Model
 {
     use HasFactory;
+    protected static function boot()
+    {
+        parent::boot();
+        $type = self::getType(request()->query('type'));
+        // global scope to set transaction type
+        static::addGlobalScope('type', function ($builder) use ($type) {
+            $builder->where('transaction_type_id', $type->id);
+        });
+
+        DB::transaction(function () use ($type){
+            static::saving(function ($transaction) use ($type){
+                $transaction->transaction_type_id = $type->id;
+            });
+        });
+    }
+
 
     protected static function getType($type = null)
     {
+        // dd($type);
         return TransactionType::where('name', $type)->first();
     }
 

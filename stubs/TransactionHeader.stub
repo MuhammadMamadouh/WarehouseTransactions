@@ -19,8 +19,8 @@ class $modelName extends TransactionHeader
     {
         parent::boot();
         DB::transaction(function () {
-            static::saving(function ($transaction) {
-                if ($transaction->status == self::DELIVERED && $transaction->journal_entry_id == null) {
+            static::saving(function ($transaction){
+                if ($transaction->status == parent::DELIVERED && $transaction->journal_entry_id == null) {
                     Pipeline::send($transaction)
                         ->through([
                             CreateJournalEntryForTransaction::class,
@@ -31,9 +31,6 @@ class $modelName extends TransactionHeader
             });
         });
     }
-
-
-
 
     // ===================== Relationships =====================
 
