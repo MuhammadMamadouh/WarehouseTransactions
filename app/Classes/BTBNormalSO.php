@@ -33,12 +33,12 @@ class BTBNormalSO extends WarehouseTransaction implements IDeliverable, ICancela
 
     public function deliver($id)
     {
-        $transaction = TransactionHeader::find($id);
+        $transaction = BTBNormalSOModel::find($id);
 
         if ($transaction->status != TransactionHeader::PENDING) {
             return response(['error' => 'This transaction is not in pending status']);
         }
-        $transaction->update(['status' => TransactionHeader::DELIVERED]); // once delivered, it will fire event in the background (check TransactionHeader model)
+        $transaction->update(['status' => BTBNormalSOModel::DELIVERED]); // once delivered, it will fire event in the background (check TransactionHeader model)
 
         return response(['message' => 'Transaction delivered successfully']);
     }

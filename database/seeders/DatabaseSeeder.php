@@ -26,16 +26,17 @@ class DatabaseSeeder extends Seeder
         //     ->create();
 
         // // run factory of item
-        // \App\Models\Item::factory()
-        //     ->count(10)
-        //     ->create();
+        \App\Models\Item::factory()
+            ->count(10)
+            ->hasWarehouses(5)
+            ->create();
 
         // run factory of transaction header with factory of warehouse
-        \App\Models\TransactionHeader::factory()
-            ->count(10)
-            ->hasDetails(5)
-            ->hasToWarehouse()
-            ->create();
+        // \App\Models\TransactionHeader::factory()
+        //     ->count(10)
+        //     ->hasDetails(5)
+        //     ->hasToWarehouse()
+        //     ->create();
 
         // run factory of transaction detail with factory of item
 

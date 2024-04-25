@@ -37,6 +37,7 @@ class ItemFactory extends Factory
             \App\Models\Warehouse::factory()->count($count),
             'warehouses',
             function ($item, $warehouse) use ($attributes) {
+                $warehouse->pivot->stock = 50;
                 return $attributes;
             }
         );

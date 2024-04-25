@@ -20,7 +20,6 @@ class TransactionHeaderCollection extends JsonResource
             'code'                  => $this->code,
             'transaction_date'      => $this->transaction_date,
             'document_no'           => $this->document_no,
-            'created_by'            => $this->created_by,
             'from_warehouse_id'     => $this->from_warehouse_id,
             'from_warehouse_name'   => $this->fromWarehouse?->name,
             'to_warehouse_id'       => $this->to_warehouse_id,
@@ -30,7 +29,7 @@ class TransactionHeaderCollection extends JsonResource
             'total_price'           => $this->total_price,
             'total_discount'        => $this->total_discount,
             'note'                  => $this->note,
-            'transaction_type'      => $this->getTransactionType(),
+            'transaction_type'      => $this->transactionType?->name,
             'status'                => $this->getStatus(),
         ];
     }
